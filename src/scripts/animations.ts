@@ -1,19 +1,33 @@
-// animations.ts — GSAP scroll animations + hero entrance + page transitions
+// animations.ts — GSAP scroll animations + hero entrance
 
 document.addEventListener('DOMContentLoaded', () => {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  // If reduced motion is preferred, show everything immediately
+  // If reduced motion is preferred, ensure everything is visible and skip
   if (reducedMotion.matches) {
     showAll();
     return;
   }
+
+  // Hide hero elements via JS immediately (before GSAP loads)
+  // This way: if GSAP fails to load, a fallback timeout reveals them
+  const heroElements = document.querySelectorAll<HTMLElement>('[data-hero-animate]');
+  heroElements.forEach((el) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+  });
+
+  // Safety net: if GSAP doesn't load within 3 seconds, show everything
+  const fallbackTimer = setTimeout(() => {
+    showAll();
+  }, 3000);
 
   // Dynamically import GSAP (deferred, non-blocking)
   Promise.all([
     import('gsap'),
     import('gsap/ScrollTrigger'),
   ]).then(([{ gsap }, { ScrollTrigger }]) => {
+    clearTimeout(fallbackTimer);
     gsap.registerPlugin(ScrollTrigger);
 
     // Listen for reduced motion change mid-session
@@ -32,9 +46,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (heroEyebrow && heroHeadline && heroCta) {
       const heroTl = gsap.timeline({ defaults: { duration: 0.6, ease: 'power2.out' } });
       heroTl
-        .fromTo(heroEyebrow, { opacity: 0, y: 24 }, { opacity: 1, y: 0 })
-        .fromTo(heroHeadline, { opacity: 0, y: 24 }, { opacity: 1, y: 0 }, '-=0.45')
-        .fromTo(heroCta, { opacity: 0, y: 24 }, { opacity: 1, y: 0 }, '-=0.3');
+        .to(heroEyebrow, { opacity: 1, y: 0 })
+        .to(heroHeadline, { opacity: 1, y: 0 }, '-=0.45')
+        .to(heroCta, { opacity: 1, y: 0 }, '-=0.3');
+    } else {
+      // No hero on this page, clear any hidden state
+      heroElements.forEach((el) => {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
     }
 
     // --- Scroll-triggered fade-up for [data-animate] elements ---
@@ -57,28 +77,16 @@ document.addEventListener('DOMContentLoaded', () => {
       );
     });
 
-    // --- Page transition fade (for View Transitions API if available) ---
-    const main = document.querySelector('main');
-    if (main) {
-      gsap.fromTo(main, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: 'linear' });
-    }
+  }).catch(() => {
+    // If GSAP fails to load entirely, show everything
+    clearTimeout(fallbackTimer);
+    showAll();
   });
 
   function showAll() {
-    // Remove GSAP hidden classes to reveal content immediately
-    document.querySelectorAll('.gsap-hidden').forEach((el) => {
-      (el as HTMLElement).style.opacity = '1';
-      (el as HTMLElement).style.transform = 'none';
-    });
-    // Also reveal hero elements
-    document.querySelectorAll('.hero__eyebrow, .hero__headline, .hero__cta').forEach((el) => {
-      (el as HTMLElement).style.opacity = '1';
-      (el as HTMLElement).style.transform = 'none';
-    });
-    // Reveal data-animate elements
-    document.querySelectorAll('[data-animate]').forEach((el) => {
-      (el as HTMLElement).style.opacity = '1';
-      (el as HTMLElement).style.transform = 'none';
+    document.querySelectorAll<HTMLElement>('.gsap-hidden, [data-hero-animate], [data-animate]').forEach((el) => {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
     });
   }
 });
