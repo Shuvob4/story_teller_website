@@ -6,7 +6,7 @@ const heroVideoUrl = homeData?.data?.heroVideoUrl || '';
 const heroPosterImage = homeData?.data?.heroPosterImage || '/uploads/hero-poster.jpg';
 ---
 
-<section class="hero grain" aria-label="Hero" id="hero-section">
+<section class="hero grain" aria-label="Hero" id="hero-section" style={`--hero-poster: url(${heroPosterImage})`}>
   <!-- Video background -->
   <video
     class="hero__video"
@@ -14,6 +14,8 @@ const heroPosterImage = homeData?.data?.heroPosterImage || '/uploads/hero-poster
     muted
     loop
     playsinline
+    preload="auto"
+    disablepictureinpicture
     poster={heroPosterImage}
     aria-hidden="true"
   >
@@ -38,6 +40,23 @@ const heroPosterImage = homeData?.data?.heroPosterImage || '/uploads/hero-poster
 
 
 
+<script>
+  // Force autoplay on mobile — if it fails, hide video and show poster
+  document.addEventListener('DOMContentLoaded', () => {
+    const video = document.querySelector('.hero__video') as HTMLVideoElement | null;
+    if (!video) return;
+
+    // Attempt to play
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Autoplay was prevented — hide video, poster stays visible via CSS background
+        video.style.display = 'none';
+      });
+    }
+  });
+</script>
+
 <style>
   .hero {
     position: relative;
@@ -47,6 +66,9 @@ const heroPosterImage = homeData?.data?.heroPosterImage || '/uploads/hero-poster
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    background-image: var(--hero-poster);
+    background-size: cover;
+    background-position: center;
   }
 
   .hero__video {
@@ -56,6 +78,14 @@ const heroPosterImage = homeData?.data?.heroPosterImage || '/uploads/hero-poster
     height: 100%;
     object-fit: cover;
     z-index: 0;
+  }
+
+  /* Hide default browser play button overlay */
+  .hero__video::-webkit-media-controls {
+    display: none !important;
+  }
+  .hero__video::-webkit-media-controls-start-playback-button {
+    display: none !important;
   }
 
   .hero__overlay {
