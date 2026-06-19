@@ -17,7 +17,7 @@ const heroPosterImage = homeData?.data?.heroPosterImage || '/uploads/hero-poster
     poster={heroPosterImage}
     aria-hidden="true"
   >
-    {heroVideoUrl && <source data-src={heroVideoUrl} type="video/mp4" />}
+    {heroVideoUrl && <source src={heroVideoUrl} type="video/mp4" />}
   </video>
 
   <!-- Gradient overlay -->
@@ -36,17 +36,7 @@ const heroPosterImage = homeData?.data?.heroPosterImage || '/uploads/hero-poster
   </div>
 </section>
 
-<script>
-  window.addEventListener('load', () => {
-    const video = document.querySelector('.hero__video');
-    if (!video) return;
-    const source = video.querySelector('source[data-src]');
-    if (source) {
-      source.setAttribute('src', source.getAttribute('data-src') || '');
-      (video as HTMLVideoElement).load();
-    }
-  });
-</script>
+
 
 <style>
   .hero {
