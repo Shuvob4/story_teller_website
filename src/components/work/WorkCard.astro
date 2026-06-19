@@ -8,13 +8,16 @@ export interface Props {
 
 const { title, category, thumbnail, embedUrl } = Astro.props;
 const isInteractive = !!embedUrl;
+// Determine if this is an external link (Instagram, etc.) vs embeddable (YouTube/Vimeo)
+const isExternalLink = embedUrl && (embedUrl.includes('instagram.com') || embedUrl.includes('tiktok.com'));
+const isEmbeddable = isInteractive && !isExternalLink;
 ---
 
 <article
   class:list={['work-card', { 'work-card--interactive': isInteractive }]}
   data-category={category}
 >
-  {isInteractive ? (
+  {isEmbeddable ? (
     <button
       class="work-card__trigger"
       type="button"
@@ -33,6 +36,25 @@ const isInteractive = !!embedUrl;
         <h3 class="work-card__title">{title}</h3>
       </div>
     </button>
+  ) : isExternalLink ? (
+    <a
+      href={embedUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="work-card__link"
+      aria-label={`View ${title} on Instagram`}
+    >
+      <img
+        src={thumbnail}
+        alt={title}
+        loading="lazy"
+        class="work-card__img"
+      />
+      <div class="work-card__overlay">
+        <p class="work-card__category label">{category}</p>
+        <h3 class="work-card__title">{title}</h3>
+      </div>
+    </a>
   ) : (
     <div class="work-card__static">
       <img
@@ -59,7 +81,8 @@ const isInteractive = !!embedUrl;
   }
 
   .work-card__trigger,
-  .work-card__static {
+  .work-card__static,
+  .work-card__link {
     position: relative;
     width: 100%;
     height: 100%;
@@ -68,9 +91,11 @@ const isInteractive = !!embedUrl;
     border: none;
     background: none;
     cursor: default;
+    text-decoration: none;
   }
 
-  .work-card__trigger {
+  .work-card__trigger,
+  .work-card__link {
     cursor: pointer;
   }
 
