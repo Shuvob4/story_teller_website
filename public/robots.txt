@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://graincinematic.com/sitemap-index.xml

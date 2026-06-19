@@ -1,0 +1,17 @@
+---
+import BaseLayout from '@/components/layout/BaseLayout.astro';
+import Hero from '@/components/home/Hero.astro';
+import FeaturedWork from '@/components/home/FeaturedWork.astro';
+import AboutTeaser from '@/components/home/AboutTeaser.astro';
+import { getEntry } from 'astro:content';
+
+const meta = await getEntry('pages', 'meta');
+const siteTitle = meta?.data?.siteTitle || 'Turjjo — Life Through a Cinematic Lens';
+const siteDescription = meta?.data?.siteDescription || 'Portfolio of Tauseef Alamgir Turjjo';
+---
+
+<BaseLayout title="Home" description={siteDescription} ogImage={meta?.data?.ogImage}>
+  <Hero />
+  <FeaturedWork />
+  <AboutTeaser />
+</BaseLayout>

@@ -1,0 +1,127 @@
+---
+import { getCollection } from 'astro:content';
+
+const allWork = await getCollection('work');
+const featuredWork = allWork
+  .filter((item) => item.data.featured)
+  .sort((a, b) => (a.data.sortOrder || 999) - (b.data.sortOrder || 999))
+  .slice(0, 6);
+---
+
+<section class="featured-work" data-animate>
+  <div class="featured-work__header">
+    <h2 class="label label--accent">Featured Work</h2>
+    <a href="/work" class="featured-work__see-all btn btn--ghost">See All Work →</a>
+  </div>
+
+  {featuredWork.length > 0 && (
+    <div class="featured-work__grid">
+      {featuredWork.map((item) => (
+        <a
+          href={`/work?filter=${encodeURIComponent(item.data.category)}`}
+          class="featured-card"
+        >
+          <img
+            src={item.data.thumbnail}
+            alt={item.data.title}
+            loading="lazy"
+            class="featured-card__img"
+          />
+          <div class="featured-card__overlay">
+            <p class="featured-card__category label">{item.data.category}</p>
+            <h3 class="featured-card__title">{item.data.title}</h3>
+          </div>
+        </a>
+      ))}
+    </div>
+  )}
+</section>
+
+<style>
+  .featured-work {
+    padding: 4.5rem 2rem;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .featured-work__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .featured-work__grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .featured-work__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .featured-work__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .featured-card {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 4px;
+    display: block;
+  }
+
+  .featured-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+
+  .featured-card:hover .featured-card__img {
+    transform: scale(1.05);
+  }
+
+  .featured-card__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.5rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 300ms var(--ease-out);
+  }
+
+  .featured-card:hover .featured-card__overlay,
+  .featured-card:focus-within .featured-card__overlay {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .featured-card__overlay {
+      opacity: 1;
+    }
+    .featured-card__img {
+      transition: none;
+    }
+  }
+
+  .featured-card__category {
+    font-size: 0.625rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .featured-card__title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--color-text);
+  }
+</style>

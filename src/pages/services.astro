@@ -1,0 +1,63 @@
+---
+import BaseLayout from '@/components/layout/BaseLayout.astro';
+import ServiceCard from '@/components/ServiceCard.astro';
+import { getEntry } from 'astro:content';
+
+const servicesData = await getEntry('pages', 'services');
+const services = servicesData?.data?.services || [];
+---
+
+<BaseLayout title="Services" description="Photography, videography, and video editing services by Tauseef Alamgir Turjjo.">
+  <section class="services-page">
+    <h1 class="services-page__title gsap-hidden" data-animate>Services</h1>
+    <p class="services-page__intro" data-animate>
+      From capturing raw moments to crafting cinematic edits, I offer a range of creative services tailored to your vision.
+    </p>
+
+    <div class="services-page__grid">
+      {services.map((service: any) => (
+        <ServiceCard
+          title={service.title}
+          description={service.description}
+          items={service.items || []}
+        />
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .services-page {
+    padding: 8rem 2rem 4.5rem;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .services-page__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .services-page__intro {
+    font-size: 1.125rem;
+    color: var(--color-text-muted);
+    max-width: 600px;
+    margin-bottom: 3rem;
+    line-height: 1.7;
+  }
+
+  .services-page__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .services-page__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

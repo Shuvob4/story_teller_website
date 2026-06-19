@@ -1,0 +1,232 @@
+/* ============================================================
+   TURJJO PORTFOLIO — Global Styles
+   Design tokens, resets, typography, film grain, animations
+   ============================================================ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── CSS Custom Properties (Design Tokens) ─── */
+:root {
+  /* Colors */
+  --color-bg:           #080808;
+  --color-bg-card:      #111111;
+  --color-bg-overlay:   rgba(0, 0, 0, 0.55);
+  --color-text:         #F0EDE8;
+  --color-text-muted:   #8A8580;
+  --color-accent:       #C9A84C;
+  --color-accent-hover: #E2C06A;
+  --color-border:       rgba(240, 237, 232, 0.12);
+
+  /* Typography */
+  --font-display: "DM Serif Display", Georgia, serif;
+  --font-sans:    "Inter", system-ui, sans-serif;
+  --tracking-cinematic: 0.14em;
+  --tracking-wide: 0.08em;
+
+  /* Z-index scale */
+  --z-base:    0;
+  --z-grain:   1;
+  --z-content: 2;
+  --z-overlay: 10;
+  --z-modal:   50;
+  --z-nav:     100;
+  --z-cursor:  9999;
+
+  /* Animation timing */
+  --dur-fast:   200ms;
+  --dur-medium: 400ms;
+  --dur-slow:   600ms;
+  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ─── Base Resets ─── */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    color-scheme: dark;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* Focus indicators */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-text-muted);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-accent);
+  }
+
+  /* Typography defaults */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    line-height: 1.15;
+    color: var(--color-text);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img, video {
+    max-width: 100%;
+    display: block;
+  }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: none;
+  }
+}
+
+/* ─── Film Grain Overlay ─── */
+@layer components {
+  .grain {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-grain);
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='1'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    background-repeat: repeat;
+    opacity: 0.04;
+    mix-blend-mode: overlay;
+  }
+
+  /* ─── Buttons ─── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 2rem;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-cinematic);
+    text-transform: uppercase;
+    transition: all var(--dur-fast) var(--ease-out);
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .btn--accent {
+    border: 1px solid var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .btn--accent:hover,
+  .btn--accent:focus-visible {
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  .btn--ghost {
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+  }
+
+  .btn--ghost:hover,
+  .btn--ghost:focus-visible {
+    border-color: var(--color-text);
+  }
+
+  /* ─── Section Label (eyebrow text) ─── */
+  .label {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-cinematic);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .label--accent {
+    color: var(--color-accent);
+  }
+
+  /* ─── Skip to content link ─── */
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    z-index: calc(var(--z-nav) + 10);
+    padding: 0.5rem 1rem;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 0 0 4px 4px;
+    transition: top 0.2s;
+  }
+
+  .skip-link:focus {
+    top: 0;
+  }
+}
+
+/* ─── GSAP Animation Initial States ─── */
+@layer utilities {
+  .gsap-hidden {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+/* ─── Reduced Motion Overrides ─── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .gsap-hidden {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

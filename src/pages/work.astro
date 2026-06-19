@@ -1,0 +1,66 @@
+---
+import BaseLayout from '@/components/layout/BaseLayout.astro';
+import WorkFilter from '@/components/work/WorkFilter.astro';
+import WorkCard from '@/components/work/WorkCard.astro';
+import WorkModal from '@/components/WorkModal.astro';
+import { getCollection, getEntry } from 'astro:content';
+
+const allWork = await getCollection('work');
+const sortedWork = allWork.sort((a, b) => (a.data.sortOrder || 999) - (b.data.sortOrder || 999));
+const meta = await getEntry('pages', 'meta');
+---
+
+<BaseLayout title="Work" description="Browse Turjjo's portfolio of photography, videography, and video editing work.">
+  <section class="work-page">
+    <h1 class="work-page__title gsap-hidden" data-animate>Work</h1>
+    <WorkFilter />
+    <div class="work-grid">
+      {sortedWork.map((item) => (
+        <WorkCard
+          title={item.data.title}
+          category={item.data.category}
+          thumbnail={item.data.thumbnail}
+          embedUrl={item.data.embedUrl}
+        />
+      ))}
+    </div>
+  </section>
+  <WorkModal />
+
+  <script src="@/scripts/workFilter.ts"></script>
+  <script src="@/scripts/modal.ts"></script>
+</BaseLayout>
+
+<style>
+  .work-page {
+    padding: 8rem 2rem 4.5rem;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .work-page__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    margin-bottom: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .work-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (min-width: 1024px) {
+    .work-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  @media (min-width: 1280px) {
+    .work-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+</style>

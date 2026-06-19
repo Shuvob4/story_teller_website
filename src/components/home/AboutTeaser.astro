@@ -1,0 +1,78 @@
+---
+import { getEntry } from 'astro:content';
+
+const homeData = await getEntry('pages', 'home');
+const fullText = homeData?.data?.aboutTeaserText || '';
+const portrait = homeData?.data?.aboutPortrait || '';
+const portraitAlt = homeData?.data?.aboutPortraitAlt || 'Tauseef Alamgir Turjjo';
+
+// Truncate at word boundary ≤280 chars + ellipsis
+function truncate(text: string, max: number): string {
+  if (text.length <= max) return text;
+  const truncated = text.slice(0, max);
+  const lastSpace = truncated.lastIndexOf(' ');
+  return truncated.slice(0, lastSpace) + '…';
+}
+
+const teaserText = truncate(fullText, 280);
+---
+
+<section class="about-teaser" data-animate>
+  <div class="about-teaser__inner">
+    {portrait && (
+      <div class="about-teaser__image-wrap">
+        <img
+          src={portrait}
+          alt={portraitAlt}
+          loading="lazy"
+          class="about-teaser__portrait"
+        />
+      </div>
+    )}
+    <div class="about-teaser__text">
+      <p class="label label--accent">About</p>
+      <p class="about-teaser__bio">{teaserText}</p>
+      <a href="/about" class="btn btn--ghost">Read More →</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-teaser {
+    padding: 4.5rem 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .about-teaser__inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .about-teaser__inner {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .about-teaser__image-wrap {
+    overflow: hidden;
+    border-radius: 4px;
+  }
+
+  .about-teaser__portrait {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+  }
+
+  .about-teaser__bio {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--color-text-muted);
+    margin: 1rem 0 2rem;
+  }
+</style>

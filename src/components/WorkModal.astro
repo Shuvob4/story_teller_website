@@ -1,0 +1,93 @@
+---
+---
+
+<dialog id="work-modal" class="work-modal" aria-modal="true" role="dialog" aria-labelledby="work-modal-title">
+  <div class="work-modal__inner">
+    <div class="work-modal__header">
+      <h2 id="work-modal-title" class="work-modal__title"></h2>
+      <button class="work-modal__close" type="button" aria-label="Close" id="work-modal-close">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="work-modal__body">
+      <iframe
+        id="work-modal-iframe"
+        class="work-modal__iframe"
+        allow="autoplay; fullscreen"
+        allowfullscreen
+        frameborder="0"
+        title="Video embed"
+      ></iframe>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .work-modal {
+    border: none;
+    background: transparent;
+    padding: 0;
+    max-width: 90vw;
+    max-height: 90vh;
+    width: 100%;
+  }
+
+  .work-modal::backdrop {
+    background: rgba(0, 0, 0, 0.9);
+  }
+
+  .work-modal__inner {
+    background: var(--color-bg-card);
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .work-modal__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .work-modal__title {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text);
+  }
+
+  .work-modal__close {
+    color: var(--color-text-muted);
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+
+  .work-modal__close:hover {
+    color: var(--color-accent);
+  }
+
+  .work-modal__body {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+  }
+
+  .work-modal__iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>

@@ -1,0 +1,24 @@
+/* GSAP animation states — imported in components that use animations */
+
+.gsap-hidden {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+/* Hero entrance elements start hidden */
+.hero__eyebrow,
+.hero__headline,
+.hero__cta {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gsap-hidden,
+  .hero__eyebrow,
+  .hero__headline,
+  .hero__cta {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

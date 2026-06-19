@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env
+.tina/__generated__/
+.vercel/
+.kiro/
+.DS_Store
+*.log
+public/uploads/hero-video.mp4

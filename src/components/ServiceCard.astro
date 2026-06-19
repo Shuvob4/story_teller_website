@@ -1,0 +1,77 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  items: string[];
+}
+
+const { title, description, items } = Astro.props;
+---
+
+<div class="service-card" data-animate>
+  <h3 class="service-card__title">{title}</h3>
+  <p class="service-card__description">{description}</p>
+  {items && items.length > 0 && (
+    <ul class="service-card__list">
+      {items.map((item) => (
+        <li class="service-card__item">{item}</li>
+      ))}
+    </ul>
+  )}
+  <a href="/contact" class="btn btn--accent service-card__cta">Get in Touch</a>
+</div>
+
+<style>
+  .service-card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .service-card__title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .service-card__description {
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .service-card__list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+    flex: 1;
+  }
+
+  .service-card__item {
+    font-size: 0.875rem;
+    color: var(--color-text);
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-border);
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .service-card__item::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-size: 0.75rem;
+  }
+
+  .service-card__cta {
+    margin-top: auto;
+    text-align: center;
+    width: 100%;
+  }
+</style>

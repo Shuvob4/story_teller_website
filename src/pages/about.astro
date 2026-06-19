@@ -1,0 +1,118 @@
+---
+import BaseLayout from '@/components/layout/BaseLayout.astro';
+import { getEntry } from 'astro:content';
+
+const aboutData = await getEntry('pages', 'about');
+const biography = aboutData?.data?.biography || '';
+const portrait = aboutData?.data?.portrait || '';
+const portraitAlt = aboutData?.data?.portraitAlt || 'Tauseef Alamgir Turjjo';
+const storyCopy = aboutData?.data?.storyCopy;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Tauseef Alamgir Turjjo",
+  "url": "https://graincinematic.com",
+  "jobTitle": "Photographer & Visual Storyteller",
+  "email": "tauseefturjjo@gmail.com",
+  "description": biography,
+};
+---
+
+<BaseLayout title="About" description="Learn about Tauseef Alamgir Turjjo — photographer, videographer, and visual storyteller." jsonLd={jsonLd}>
+  <section class="about-page">
+    <h1 class="about-page__title gsap-hidden" data-animate>About</h1>
+
+    <div class="about-page__hero" data-animate>
+      {portrait && (
+        <img
+          src={portrait}
+          alt={portraitAlt}
+          class="about-page__portrait"
+          loading="eager"
+        />
+      )}
+    </div>
+
+    <div class="about-page__content" data-animate>
+      <div class="about-page__bio">
+        <p class="label label--accent">Biography</p>
+        <p class="about-page__text">{biography}</p>
+      </div>
+
+      {storyCopy && (
+        <div class="about-page__story">
+          <h2 class="about-page__story-title">My Story</h2>
+          {storyCopy.children && storyCopy.children.map((block: any) => {
+            if (block.type === 'p') {
+              const text = block.children?.map((child: any) => child.text || '').join('') || '';
+              return <p class="about-page__text">{text}</p>;
+            }
+            return null;
+          })}
+        </div>
+      )}
+
+      <a href="/contact" class="btn btn--accent about-page__cta">Work with me →</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-page {
+    padding: 8rem 2rem 4.5rem;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .about-page__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    margin-bottom: 3rem;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .about-page__hero {
+    margin-bottom: 3rem;
+  }
+
+  .about-page__portrait {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+    border-radius: 4px;
+    aspect-ratio: 16/9;
+  }
+
+  .about-page__content {
+    max-width: 720px;
+  }
+
+  .about-page__bio {
+    margin-bottom: 3rem;
+  }
+
+  .about-page__text {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--color-text-muted);
+    margin-top: 1rem;
+  }
+
+  .about-page__story {
+    margin-bottom: 3rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 2rem;
+  }
+
+  .about-page__story-title {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-page__cta {
+    margin-top: 2rem;
+  }
+</style>

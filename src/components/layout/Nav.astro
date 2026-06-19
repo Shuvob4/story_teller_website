@@ -1,0 +1,340 @@
+---
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+  { label: 'Home', href: '/' },
+  { label: 'Work', href: '/work' },
+  { label: 'About', href: '/about' },
+  { label: 'Services', href: '/services' },
+  { label: 'Contact', href: '/contact' },
+];
+
+function isActive(href: string): boolean {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+---
+
+<header class="nav-wrapper" id="nav-wrapper" role="banner">
+  <nav role="navigation" aria-label="Main navigation" class="nav">
+    <a href="/" class="nav__logo" aria-label="Turjjo Portfolio — Home">
+      <img src="/logo/logo.png" alt="Turjjo — Life Through a Cinematic Lens" width="200" height="70" />
+    </a>
+
+    <!-- Desktop nav links -->
+    <ul class="nav__links" id="nav-links">
+      {navLinks.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            class:list={['nav__link', { 'nav__link--active': isActive(link.href) }]}
+            aria-current={isActive(link.href) ? 'page' : undefined}
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <!-- Hamburger button (mobile) -->
+    <button
+      class="nav__hamburger"
+      id="nav-hamburger"
+      type="button"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Open menu"
+    >
+      <span class="nav__hamburger-line"></span>
+      <span class="nav__hamburger-line"></span>
+      <span class="nav__hamburger-line"></span>
+    </button>
+  </nav>
+
+  <!-- Mobile menu overlay -->
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true" role="dialog" aria-label="Mobile navigation menu">
+    <ul class="mobile-menu__links">
+      {navLinks.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            class:list={['mobile-menu__link', { 'mobile-menu__link--active': isActive(link.href) }]}
+            aria-current={isActive(link.href) ? 'page' : undefined}
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</header>
+
+<style>
+  .nav-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--z-nav);
+    transition: background-color var(--dur-fast) var(--ease-out);
+  }
+
+  .nav-wrapper--scrolled {
+    background-color: var(--color-bg);
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .nav__logo {
+    display: flex;
+    align-items: center;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .nav__logo img {
+    width: 200px;
+    height: 70px;
+    object-fit: contain;
+  }
+
+  .nav__links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav__link {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-cinematic);
+    text-transform: uppercase;
+    color: var(--color-text);
+    transition: color var(--dur-fast) var(--ease-out);
+    padding: 0.5rem 0;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .nav__link:hover {
+    color: var(--color-accent);
+  }
+
+  .nav__link--active {
+    color: var(--color-accent);
+  }
+
+  /* Hamburger button */
+  .nav__hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  .nav__hamburger-line {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: var(--color-text);
+    transition: transform var(--dur-fast) var(--ease-out),
+                opacity var(--dur-fast) var(--ease-out);
+  }
+
+  .nav__hamburger--open .nav__hamburger-line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .nav__hamburger--open .nav__hamburger-line:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav__hamburger--open .nav__hamburger-line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Mobile menu overlay */
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    background-color: var(--color-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--dur-medium) var(--ease-out),
+                visibility var(--dur-medium) var(--ease-out);
+    z-index: calc(var(--z-nav) - 1);
+  }
+
+  .mobile-menu--open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .mobile-menu__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .mobile-menu__link {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--color-text);
+    transition: color var(--dur-fast) var(--ease-out);
+    display: inline-block;
+    min-height: 44px;
+    line-height: 44px;
+  }
+
+  .mobile-menu__link:hover {
+    color: var(--color-accent);
+  }
+
+  .mobile-menu__link--active {
+    color: var(--color-accent);
+  }
+
+  /* Responsive */
+  @media (max-width: 767px) {
+    .nav__links {
+      display: none;
+    }
+
+    .nav__hamburger {
+      display: flex;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const navWrapper = document.getElementById('nav-wrapper');
+    const hamburger = document.getElementById('nav-hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (!navWrapper || !hamburger || !mobileMenu) return;
+
+    // --- Scroll detection: transparent → solid background ---
+    // Use IntersectionObserver on a sentinel element (the hero or first section)
+    const sentinel = document.createElement('div');
+    sentinel.style.position = 'absolute';
+    sentinel.style.top = '0';
+    sentinel.style.height = '1px';
+    sentinel.style.width = '1px';
+    sentinel.style.pointerEvents = 'none';
+    sentinel.setAttribute('aria-hidden', 'true');
+    document.body.prepend(sentinel);
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          navWrapper.classList.remove('nav-wrapper--scrolled');
+        } else {
+          navWrapper.classList.add('nav-wrapper--scrolled');
+        }
+      },
+      { threshold: 0 }
+    );
+    observer.observe(sentinel);
+
+    // --- Mobile menu toggle ---
+    let isMenuOpen = false;
+    const mobileLinks = mobileMenu.querySelectorAll<HTMLAnchorElement>('.mobile-menu__link');
+    const focusableElements: HTMLElement[] = [hamburger, ...Array.from(mobileLinks)];
+
+    function openMenu() {
+      isMenuOpen = true;
+      hamburger.classList.add('nav__hamburger--open');
+      hamburger.setAttribute('aria-expanded', 'true');
+      hamburger.setAttribute('aria-label', 'Close menu');
+      mobileMenu.classList.add('mobile-menu--open');
+      mobileMenu.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+
+      // Focus first link
+      if (mobileLinks.length > 0) {
+        mobileLinks[0].focus();
+      }
+    }
+
+    function closeMenu() {
+      isMenuOpen = false;
+      hamburger.classList.remove('nav__hamburger--open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      hamburger.setAttribute('aria-label', 'Open menu');
+      mobileMenu.classList.remove('mobile-menu--open');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      hamburger.focus();
+    }
+
+    hamburger.addEventListener('click', () => {
+      if (isMenuOpen) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+
+    // Close on nav link click
+    mobileLinks.forEach((link) => {
+      link.addEventListener('click', () => {
+        closeMenu();
+      });
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isMenuOpen) {
+        closeMenu();
+      }
+    });
+
+    // Focus trap when mobile menu is open
+    document.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (!isMenuOpen || e.key !== 'Tab') return;
+
+      const firstFocusable = focusableElements[0];
+      const lastFocusable = focusableElements[focusableElements.length - 1];
+
+      if (e.shiftKey) {
+        // Shift+Tab: if focus is on first element, wrap to last
+        if (document.activeElement === firstFocusable) {
+          e.preventDefault();
+          lastFocusable.focus();
+        }
+      } else {
+        // Tab: if focus is on last element, wrap to first
+        if (document.activeElement === lastFocusable) {
+          e.preventDefault();
+          firstFocusable.focus();
+        }
+      }
+    });
+  });
+</script>

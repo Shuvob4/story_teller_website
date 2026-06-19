@@ -1,0 +1,37 @@
+{
+  "services": [
+    {
+      "title": "Photography",
+      "description": "Street, portrait, and documentary photography sessions",
+      "items": [
+        "Street & urban photography",
+        "Portrait sessions",
+        "Documentary coverage",
+        "Event photography",
+        "Digital delivery with colour grading"
+      ]
+    },
+    {
+      "title": "Videography",
+      "description": "Short films, event coverage, and urban/street films",
+      "items": [
+        "Short film production",
+        "Event videography",
+        "Urban & street videography",
+        "Drone footage",
+        "4K delivery"
+      ]
+    },
+    {
+      "title": "Video Editing",
+      "description": "Post-production, colour grading, and reel assembly",
+      "items": [
+        "Professional colour grading",
+        "Reel assembly & editing",
+        "Motion graphics",
+        "Sound design & mixing",
+        "Social media format export"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+---
+const categories = ['All', 'Street Photography', 'Videography', 'Urban/Street Videography', 'Video Editing'];
+---
+
+<div class="work-filter" role="group" aria-label="Filter work by category">
+  {categories.map((cat, i) => (
+    <button
+      class="work-filter__btn"
+      data-filter={cat === 'All' ? 'all' : cat}
+      type="button"
+      aria-pressed={i === 0 ? 'true' : 'false'}
+    >
+      {cat}
+    </button>
+  ))}
+</div>
+
+<style>
+  .work-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.5rem;
+  }
+
+  .work-filter__btn {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-cinematic);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding: 0.5rem 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
+    background: transparent;
+    cursor: pointer;
+    transition: all var(--dur-fast) var(--ease-out);
+    min-height: 44px;
+    white-space: nowrap;
+  }
+
+  .work-filter__btn:hover {
+    border-color: var(--color-text);
+    color: var(--color-text);
+  }
+
+  .work-filter__btn[aria-pressed="true"] {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: rgba(201, 168, 76, 0.08);
+  }
+</style>

@@ -1,0 +1,28 @@
+{
+  "biography": "I'm Tauseef Alamgir Turjjo, a photographer and content creator passionate about documenting real life through my lens. I capture everyday moments, human emotions, and the stories of people around me—turning ordinary experiences into meaningful visual narratives. Through photography and storytelling, I aim to preserve authentic moments that connect, inspire, and reflect the beauty of everyday life.",
+  "portrait": "/uploads/portrait.jpg",
+  "portraitAlt": "Tauseef Alamgir Turjjo — Visual Storyteller",
+  "storyCopy": {
+    "type": "root",
+    "children": [
+      {
+        "type": "p",
+        "children": [
+          {
+            "type": "text",
+            "text": "My journey began on the streets, where every corner tells a story. I believe in the power of unscripted moments — the way light falls on a stranger's face, the energy of an urban landscape at dusk, the quiet beauty of everyday rituals."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "children": [
+          {
+            "type": "text",
+            "text": "Every frame I capture is a testament to the belief that life itself is cinematic. You don't need a script to find beauty — you need presence, patience, and a willingness to see the extraordinary in the ordinary."
+          }
+        ]
+      }
+    ]
+  }
+}

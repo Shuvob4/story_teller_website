@@ -1,0 +1,12 @@
+---
+/**
+ * FilmGrain.astro
+ * Wraps child content with the `.grain` CSS class that applies an SVG noise
+ * texture as a ::before pseudo-element. The overlay is purely decorative,
+ * so aria-hidden="true" is applied to the wrapper div.
+ */
+---
+
+<div class="grain" aria-hidden="true">
+  <slot />
+</div>
