@@ -81,7 +81,7 @@ TINA_TOKEN=your-read-only-token-here
 PUBLIC_FORMSPREE_ID=your-form-id-here
 ```
 
-4. The contact form will POST submissions to Formspree, which forwards them to `tauseefturjjo@gmail.com`
+4. The contact form will POST submissions to Formspree, which forwards them to the configured email
 
 ---
 

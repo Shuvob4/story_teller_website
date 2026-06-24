@@ -1,0 +1,44 @@
+fragment WorkParts on Work {
+  __typename
+  title
+  category
+  thumbnail
+  embedUrl
+  description
+  featured
+  sortOrder
+}
+
+fragment HomeParts on Home {
+  __typename
+  heroVideoUrl
+  heroPosterImage
+  aboutTeaserText
+  aboutPortrait
+  aboutPortraitAlt
+}
+
+fragment AboutParts on About {
+  __typename
+  biography
+  portrait
+  portraitAlt
+  storyCopy
+}
+
+fragment ServicesParts on Services {
+  __typename
+  services {
+    __typename
+    title
+    description
+    items
+  }
+}
+
+fragment MetaParts on Meta {
+  __typename
+  siteTitle
+  siteDescription
+  ogImage
+}
